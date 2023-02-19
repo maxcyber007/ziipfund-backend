@@ -19,11 +19,12 @@ var hmacSampleSecret []byte
 // Biding from Register JSON
 type RegisterBody struct {
 	//Id     string  `json:"id" binding:"required"`
-	Ref_code  string `json:"ref_code" binding:"required"`
-	Firstname string `json:"firstname" binding:"required"`
-	Lastname  string `json:"lastname" binding:"required"`
-	Email     string `json:"email" binding:"required"`
-	Password  string `json:"password" binding:"required"`
+	Ref_code       string `json:"ref_code" binding:"required"`
+	Child_ref_code string `json:"child_ref_code" binding:"required"`
+	Firstname      string `json:"firstname" binding:"required"`
+	Lastname       string `json:"lastname" binding:"required"`
+	Email          string `json:"email" binding:"required"`
+	Password       string `json:"password" binding:"required"`
 }
 
 func Register(c *gin.Context) {
@@ -44,12 +45,12 @@ func Register(c *gin.Context) {
 
 	//Create User
 	encryptedPassword, _ := bcrypt.GenerateFromPassword([]byte(json.Password), 10)
-	tbl_member := orm.Tbl_member{Ref_code: json.Ref_code, Firstname: json.Firstname, Lastname: json.Lastname, Email: json.Email, Password: string(encryptedPassword)}
+	tbl_member := orm.Tbl_member{Ref_code: json.Ref_code, Child_ref_code: json.Child_ref_code, Firstname: json.Firstname, Lastname: json.Lastname, Email: json.Email, Password: string(encryptedPassword)}
 	orm.Db.Create(&tbl_member)
 	if tbl_member.Id > 0 {
-		c.JSON(http.StatusOK, gin.H{"status": "ok", "message": "User Created", "userID": tbl_member.Id})
+		c.JSON(http.StatusOK, gin.H{"status": "ok", "message": "User Created", "userID": tbl_member.Id, "Child_ref_code": json.Child_ref_code})
 	} else {
-		c.JSON(http.StatusOK, gin.H{"status": "error", "message": "User Failed"})
+		c.JSON(http.StatusOK, gin.H{"status": "error", "message": "User Failed", "Child_ref_code": json.Child_ref_code})
 	}
 
 }
