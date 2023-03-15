@@ -1,10 +1,12 @@
 package orm
+
 import (
 	"os"
-	"gorm.io/gorm"
+
 	"gorm.io/driver/mysql"
-  )
-  
+	"gorm.io/gorm"
+)
+
 var Db *gorm.DB
 var err error
 
@@ -17,6 +19,6 @@ func InitDB() {
 
 	//Migrate the schema
 	//db.AutoMigrate(&Tbl_member{})
-
+	//Db.AutoMigrate(&Tbl_orders{})
 
 }
